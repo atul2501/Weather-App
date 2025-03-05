@@ -1,0 +1,46 @@
+import requests
+import json
+import os
+
+
+WeatherAPI = " "     #www.weatherapi.com
+
+while True:
+	city=input("please enter your city\n city = ")
+
+	if city =="q":
+		os.system(f"say 'bye Atul see you soon'")
+		break
+
+	url=f"http://api.weatherapi.com/v1/current.json?key={WeatherAPI}&q={city}"
+	
+	try:
+		r=requests.get(url)
+		#print(r.text)
+		wdic=json.loads(r.text)
+
+		if "location" in wdic:  
+			l=wdic["location"]["name"]
+			t=wdic["current"]["temp_c"]
+			d=wdic["current"]["last_updated"]
+			w=wdic["current"]["wind_kph"]
+			h=wdic["current"]["humidity"]
+
+			#print
+			print("hii atul ")
+			print(f"location    = {l}")
+			print(f"temperature = {t}°C")
+			print(f"last update = {d}")
+			print(f"wind kph    = {w}")
+			print(f"humidity    = {h}%")
+			
+			
+			command=f"say '{l} temperature is {t} degree Celcius ,wind is {w} kph ,humidity is {h}  and last update is {d}'"
+			os.system(command)
+
+		else:
+			print("Could not retrieve weather data. Please check if the city name is valid.")
+			os.system(f"say 'Could not retrieve weather data'")
+
+	except Exception as e:
+	        print(f"An unexpected error occurred: {e}")
